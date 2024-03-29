@@ -21,16 +21,16 @@ class _MainScreenState extends State<MainScreen> {
             itemCount: goals.length,
             itemBuilder: (context, index) {
               if (!goals[index]['completed']) {
-              return GoalItem(
-                goal: goals[index]['goal']!,
-                todo: goals[index]['todo']!,
-                completed: goals[index]['completed']!,
-                onComplete: (bool completed) {
-                  setState(() {
-                    Provider.of<Goals>(context, listen: false).completeGoal(goals[index]['id']);
-                  });
-                },
-              );
+                return GoalItem(
+                  goal: goals[index]['goal']!,
+                  todo: goals[index]['todo']!,
+                  completed: goals[index]['completed']!,
+                  onComplete: (bool completed) {
+                    setState(() {
+                      Provider.of<Goals>(context, listen: false).completeGoal(goals[index]['id']);
+                    });
+                  },
+                );
               } else {
                 // 완료된 경우 빈 컨테이너를 반환하여 해당 항목을 리스트에서 제거
                 return Container();
@@ -43,22 +43,22 @@ class _MainScreenState extends State<MainScreen> {
         builder: (context, goalsData, child) {
           return FloatingActionButton(
             onPressed: () {
-              if (goalsData.goals.length >= 3) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('목표 추가 한도를 초과했습니다.'),
-                    duration: Duration(seconds: 2),
-                    behavior: SnackBarBehavior.floating,
-                    margin: EdgeInsets.symmetric(horizontal: 50),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  ),
-                );
-              } else {
+              // if (goalsData.goals.length >= 3) {
+              //   ScaffoldMessenger.of(context).showSnackBar(
+              //     SnackBar(
+              //       content: Text('목표 추가 한도를 초과했습니다.'),
+              //       duration: Duration(seconds: 2),
+              //       behavior: SnackBarBehavior.floating,
+              //       margin: EdgeInsets.symmetric(horizontal: 50),
+              //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              //     ),
+              //   );
+              // } else {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => SetGoalScreen()),
                 );
-              }
+              // }
             },
             child: Icon(Icons.add),
           );
@@ -88,12 +88,20 @@ class GoalItem extends StatefulWidget {
 class _GoalItemState extends State<GoalItem> {
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(widget.goal),
-      subtitle: Text(widget.todo),
-      onTap: () {
-        widget.onComplete(!widget.completed);
+    return Dismissible(
+      key: Key(widget.goal),
+      onDismissed: (direction) {
+        setState(() {
+          widget.onComplete(!widget.completed);
+        });
       },
+      child: ListTile(
+        title: Text(widget.goal),
+        subtitle: Text(widget.todo),
+        onTap: () {
+          widget.onComplete(!widget.completed);
+        },
+      ),
     );
   }
 }
