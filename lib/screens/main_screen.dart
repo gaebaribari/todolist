@@ -11,9 +11,21 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  bool activeChangedTopPriorityButton = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.star),
+          onPressed: (){
+            setState(() {
+              activeChangedTopPriorityButton = true;
+            });
+          },
+        ),
+      ),
       body: Consumer<Goals>(
         builder: (context, goalsData, child) {
           final goals = goalsData.goals;
@@ -30,9 +42,14 @@ class _MainScreenState extends State<MainScreen> {
                       Provider.of<Goals>(context, listen: false).completeGoal(goals[index]['id']);
                     });
                   },
+                  activeChangedTopPriorityButton: activeChangedTopPriorityButton, // 이 부분 추가
+                  changedTopPriority: (int id) {
+                    Provider.of<Goals>(context, listen: false).changedTopPriority(id);
+                    activeChangedTopPriorityButton = false;
+                  },
+                  id: goals[index]['id'], // 이 부분도 추가
                 );
               } else {
-                // 완료된 경우 빈 컨테이너를 반환하여 해당 항목을 리스트에서 제거
                 return Container();
               }
             },
@@ -67,25 +84,30 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 }
-
 class GoalItem extends StatefulWidget {
   final String goal;
   final String todo;
   final bool completed;
   final Function(bool) onComplete;
+  final bool activeChangedTopPriorityButton;
+  final Function(int) changedTopPriority;
+  final int id;
 
   GoalItem({
     required this.goal,
     required this.todo,
     required this.completed,
     required this.onComplete,
+    required this.activeChangedTopPriorityButton,
+    required this.changedTopPriority,
+    required this.id, // id 속
   });
 
   @override
   _GoalItemState createState() => _GoalItemState();
 }
-
 class _GoalItemState extends State<GoalItem> {
+
   @override
   Widget build(BuildContext context) {
     return Dismissible(
@@ -99,7 +121,11 @@ class _GoalItemState extends State<GoalItem> {
         title: Text(widget.goal),
         subtitle: Text(widget.todo),
         onTap: () {
-          widget.onComplete(!widget.completed);
+          if(widget.activeChangedTopPriorityButton){
+            widget.changedTopPriority(widget.id);
+          }else{
+            widget.onComplete(!widget.completed);
+          }
         },
       ),
     );

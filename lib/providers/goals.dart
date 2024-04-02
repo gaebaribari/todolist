@@ -10,6 +10,7 @@ class Goals with ChangeNotifier {
       'goal': goal,
       'todo': todo,
       'completed': false,
+      'isTopPriority' : false,
     });
     _nextId++;
     notifyListeners();
@@ -19,8 +20,23 @@ class Goals with ChangeNotifier {
     final goalIndex = goals.indexWhere((goal) => goal['id'] == id);
     if (goalIndex != -1) {
       goals[goalIndex]['completed'] = !goals[goalIndex]['completed'];
-      print(goals[goalIndex]);
       notifyListeners();
     }
+  }
+
+  void changedTopPriority(int id) {
+    final topPriorityIndex = goals.indexWhere((goal) => goal['isTopPriority'] == id);
+    if (topPriorityIndex == -1) {
+      for (var goal in goals) {
+          goal['isTopPriority'] = false;
+        }
+
+    }
+    final goalIndex = goals.indexWhere((goal) => goal['id'] == id);
+    if (goalIndex != -1) {
+      goals[goalIndex]['isTopPriority'] = true;
+    }
+    print(goals.map((goal) => goal['isTopPriority']).toList());
+    notifyListeners();
   }
 }
