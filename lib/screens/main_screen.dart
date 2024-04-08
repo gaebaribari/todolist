@@ -56,31 +56,6 @@ class _MainScreenState extends State<MainScreen> {
           );
         },
       ),
-      floatingActionButton: Consumer<Goals>(
-        builder: (context, goalsData, child) {
-          return FloatingActionButton(
-            onPressed: () {
-              // if (goalsData.goals.length >= 3) {
-              //   ScaffoldMessenger.of(context).showSnackBar(
-              //     SnackBar(
-              //       content: Text('목표 추가 한도를 초과했습니다.'),
-              //       duration: Duration(seconds: 2),
-              //       behavior: SnackBarBehavior.floating,
-              //       margin: EdgeInsets.symmetric(horizontal: 50),
-              //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              //     ),
-              //   );
-              // } else {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SetGoalScreen()),
-                );
-              // }
-            },
-            child: Icon(Icons.add),
-          );
-        },
-      ),
     );
   }
 }
