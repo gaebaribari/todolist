@@ -24,19 +24,4 @@ class Goals with ChangeNotifier {
     }
   }
 
-  void changedTopPriority(int id) {
-    final topPriorityIndex = goals.indexWhere((goal) => goal['isTopPriority'] == id);
-    if (topPriorityIndex == -1) {
-      for (var goal in goals) {
-          goal['isTopPriority'] = false;
-        }
-
-    }
-    final goalIndex = goals.indexWhere((goal) => goal['id'] == id);
-    if (goalIndex != -1) {
-      goals[goalIndex]['isTopPriority'] = true;
-    }
-    print(goals.map((goal) => goal['isTopPriority']).toList());
-    notifyListeners();
-  }
 }
