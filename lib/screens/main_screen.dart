@@ -15,6 +15,19 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.edit_note_outlined), // 연필에 추가 아이콘 없나 좀 동글동글한
+          onPressed: () {},
+        ),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.bar_chart_rounded),
+              onPressed: () {
+                // 새로운 다트 페이지 만들기
+              }),
+        ],
+      ),
       body: Consumer<Goals>(
         builder: (context, goalsData, child) {
           final goals = goalsData.goals;
