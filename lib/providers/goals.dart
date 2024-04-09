@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Goals with ChangeNotifier {
   List<Map<String, dynamic>> goals = [];
-  int _nextId = 1;
+
+
 
   void addGoal(String goal, String todo) {
-    goals.add({
-      'id': _nextId,
-      'goal': goal,
-      'todo': todo,
-      'completed': false,
-      'isTopPriority' : false,
-    });
-    _nextId++;
+    var now = DateTime.now();
+    int formattedDate = int.parse(DateFormat('yyMMdd').format(now));
+
+    var oneWeek = 7;
+    for (int i = 0; i < oneWeek; i++) {
+      goals.add({
+        'id': 1+i,
+        'todo': todo,
+        'completed': false,
+        'date': formattedDate+i,
+      });
+    }
+    print(goals);
     notifyListeners();
   }
 
