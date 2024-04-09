@@ -14,7 +14,6 @@ class _SetGoalScreenState extends State<SetGoalScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _goalController = TextEditingController();
   TextEditingController _todoController = TextEditingController();
-  bool _showTodoField = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,52 +28,30 @@ class _SetGoalScreenState extends State<SetGoalScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (!_showTodoField)
-              TextFormField(
-                controller: _goalController,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return '이번주 동안 집중할 목표를 입력해 주세요';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelText: '이번주 동안 집중하고 싶은 한가지를 적어주세요',
-                ),
-                ),
-              if (_showTodoField)
                 TextFormField(
                   controller: _todoController,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return '지금 당장 할 수 있는 작은 행동을 입력해 주세요';
+                      return '일주일 동안 집중할 한가지 행동을 적어주세요';
                     }
                     return null;
                   },
                   decoration: InputDecoration(
                     labelText:
-                        '${_goalController.text}를 위해 지금 당장 할수있는 작은 행동을 적어주세요',
+                        '일주일 동안 집중할 한가지 행동을 적어주세요',
                   ),
                 ),
               SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
-                  if (!_showTodoField) {
-                    setState(() {
-                      if (_formKey.currentState!.validate()) {
-                        _showTodoField = true; // 다음 단계로 넘어감
-                      }
-                    });
-                  } else {
-                    // 작은 할일 입력 후 제출
                     if (_formKey.currentState!.validate()) {
                       // 폼 유효성 검사 통과
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('작은할일 확인'),
-                            content: Text('당장할 수 있는거 확실합니까?'),
+                            title: Text('시작하시겠습니까?'),
+                            content: Text('작은 단위로 나눠야 움직이기 쉽습니다 '),
                             actions: [
                               TextButton(
                                 onPressed: () {
@@ -94,9 +71,8 @@ class _SetGoalScreenState extends State<SetGoalScreen> {
                         },
                       );
                     }
-                  }
-                },
-                child: Text(_showTodoField ? '제출' : '다음'),
+                  },
+                child: Text('제출'),
               ),
             ],
           ),
@@ -107,11 +83,10 @@ class _SetGoalScreenState extends State<SetGoalScreen> {
 
   void _submitForm() {
 
-    String goal = _goalController.text;
     String todo = _todoController.text;
 
     Goals goals = Provider.of<Goals>(context, listen:false);
-    goals.addGoal(goal,todo);
+    goals.addGoal(todo);
     Navigator.push(context,
         MaterialPageRoute(builder: (context)=>MainScreen()));
 

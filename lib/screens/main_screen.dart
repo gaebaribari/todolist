@@ -128,7 +128,7 @@ class _GoalItemState extends State<GoalItem> {
     return  ListTile(
         title: Text('${widget.id}'),
         subtitle: Text(widget.todo),
-        trailing:   CustomDisabledFAB(
+      trailing:   CustomDisabledFAB(
           isEnabled: _isEnabled, // 활성화 여부 설정
           onPressed: _isEnabled
               ? () {

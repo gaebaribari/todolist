@@ -6,7 +6,7 @@ class Goals with ChangeNotifier {
 
 
 
-  void addGoal(String goal, String todo) {
+  void addGoal(String todo) {
     var now = DateTime.now();
     int formattedDate = int.parse(DateFormat('yyMMdd').format(now));
 
