@@ -4,8 +4,6 @@ import 'package:intl/intl.dart';
 class Goals with ChangeNotifier {
   List<Map<String, dynamic>> goals = [];
 
-
-
   void addGoal(String todo) {
     var now = DateTime.now();
     int formattedDate = int.parse(DateFormat('yyMMdd').format(now));
@@ -19,7 +17,6 @@ class Goals with ChangeNotifier {
         'date': formattedDate+i,
       });
     }
-    print(goals);
     notifyListeners();
   }
 
@@ -27,6 +24,7 @@ class Goals with ChangeNotifier {
     final goalIndex = goals.indexWhere((goal) => goal['id'] == id);
     if (goalIndex != -1) {
       goals[goalIndex]['completed'] = !goals[goalIndex]['completed'];
+      print(goals);
       notifyListeners();
     }
   }
