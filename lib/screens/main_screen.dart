@@ -33,25 +33,41 @@ class _MainScreenState extends State<MainScreen> {
         child: Stack(
           children:
               todoData.reversed.where((item) => !item['completed']).map((item) {
-            var index = item['id'];
+            var index = todoData.indexOf(item);
+            var topPosition = 130.0 + 10.0 * index;
+
             var cardWidth = 300 - 40.0 * (index);
-            return Positioned(
-              top: 130 + 20.0 * index,
+
+
+            var now = DateTime.now();
+            int formattedDate = int.parse(DateFormat('yyMMdd').format(now));
+
+            return AnimatedPositioned(
+              duration: Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+              top: topPosition,
               left: (MediaQuery.of(context).size.width - cardWidth) / 2,
-              child: Column(
-                children: [
-                  Text(item['todo']),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        Provider.of<Goals>(context, listen: false)
-                            .completeGoal(item['id']);
-                        // isCompleted = !isCompleted;
-                      });
-                    },
-                    child: Text('완수'),
+
+                child:Card(
+                child: Container(
+                  height: 350,
+                  width: cardWidth,
+                  child: Column(
+                    children: [
+                      Text(item['todo']),
+                      ElevatedButton(
+                        onPressed: formattedDate == item['date'] ?() {
+                          setState(() {
+                            Provider.of<Goals>(context, listen: false)
+                                .completeGoal(item['id']);
+                            // isCompleted = !isCompleted;
+                          });
+                        } : null,
+                        child: Text('완수'),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             );
           }).toList(),
