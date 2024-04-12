@@ -34,10 +34,6 @@ class _MainScreenState extends State<MainScreen> {
           children:
               todoData.reversed.where((item) => !item['completed']).map((item) {
             var index = todoData.indexOf(item);
-            var topPosition = 130.0 + 10.0 * index;
-
-            var cardWidth = 300 - 40.0 * (index);
-
 
             var now = DateTime.now();
             int formattedDate = int.parse(DateFormat('yyMMdd').format(now));
@@ -45,24 +41,28 @@ class _MainScreenState extends State<MainScreen> {
             return AnimatedPositioned(
               duration: Duration(milliseconds: 500),
               curve: Curves.easeInOut,
-              top: topPosition,
-              left: (MediaQuery.of(context).size.width - cardWidth) / 2,
-
-                child:Card(
+              top: item['topPosition'],
+              left: item['sidePosition'],
+              right: item['sidePosition'],
+              child: Card(
                 child: Container(
                   height: 350,
-                  width: cardWidth,
+                  width: item['cardWidth'],
                   child: Column(
                     children: [
                       Text(item['todo']),
                       ElevatedButton(
-                        onPressed: formattedDate == item['date'] ?() {
-                          setState(() {
-                            Provider.of<Goals>(context, listen: false)
-                                .completeGoal(item['id']);
-                            // isCompleted = !isCompleted;
-                          });
-                        } : null,
+                        onPressed: formattedDate == item['date']
+                            ? () {
+                                setState(() {
+                                  Provider.of<Goals>(context, listen: false)
+                                      .completeGoal(item['id']);
+                                  Provider.of<Goals>(context, listen: false)
+                                      .changeTopPosition(item['id']);
+                                  // isCompleted = !isCompleted;
+                                });
+                              }
+                            : null,
                         child: Text('완수'),
                       ),
                     ],

@@ -19,7 +19,6 @@ class _SetGoalScreenState extends State<SetGoalScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Form 예제'),
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
