@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todolist/providers/goals.dart';
 import 'package:intl/intl.dart';
+import 'package:todolist/screens/statics_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -25,53 +26,52 @@ class _MainScreenState extends State<MainScreen> {
           IconButton(
               icon: Icon(Icons.bar_chart_rounded),
               onPressed: () {
-                // 새로운 다트 페이지 만들기 (todo chart page? 이런느낌)
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => StaticsScreen()));
               }),
         ],
       ),
-      body: Center(
-        child: Stack(
-          children:
-              todoData.reversed.where((item) => !item['completed']).map((item) {
-            var index = todoData.indexOf(item);
+      body: Stack(
+        children:
+            todoData.reversed.where((item) => !item['completed']).map((item) {
+          var index = todoData.indexOf(item);
 
-            var now = DateTime.now();
-            int formattedDate = int.parse(DateFormat('yyMMdd').format(now));
+          var now = DateTime.now();
+          int formattedDate = int.parse(DateFormat('yyMMdd').format(now));
 
-            return AnimatedPositioned(
-              duration: Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-              top: item['topPosition'],
-              left: item['sidePosition'],
-              right: item['sidePosition'],
-              child: Card(
-                child: Container(
-                  height: 350,
-                  width: item['cardWidth'],
-                  child: Column(
-                    children: [
-                      Text(item['todo']),
-                      ElevatedButton(
-                        onPressed: formattedDate == item['date']
-                            ? () {
-                                setState(() {
-                                  Provider.of<Goals>(context, listen: false)
-                                      .completeGoal(item['id']);
-                                  Provider.of<Goals>(context, listen: false)
-                                      .changeTopPosition(item['id']);
-                                  // isCompleted = !isCompleted;
-                                });
-                              }
-                            : null,
-                        child: Text('완수'),
-                      ),
-                    ],
-                  ),
+          return AnimatedPositioned(
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+            top: item['topPosition'],
+            left: item['sidePosition'],
+            right: item['sidePosition'],
+            child: Card(
+              child: Container(
+                height: 350,
+                width: item['cardWidth'],
+                child: Column(
+                  children: [
+                    Text(item['todo']),
+                    Text(item['date'].toString()),
+                    ElevatedButton(
+                      onPressed: formattedDate == item['date']
+                          ? () {
+                              setState(() {
+                                Provider.of<Goals>(context, listen: false)
+                                    .changeComplete(item['id']);
+                                Provider.of<Goals>(context, listen: false)
+                                    .changeTopPosition(item['id']);
+                              });
+                            }
+                          : null,
+                      child: Text('완수'),
+                    ),
+                  ],
                 ),
               ),
-            );
-          }).toList(),
-        ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

@@ -18,14 +18,13 @@ class Goals with ChangeNotifier {
         'completed': false,
         'date': formattedDate + i,
         'topPosition': initialTopPosition + 10.0 * i,
-        'sidePosition':10.0 * (i+1)
-
+        'sidePosition': 10.0 * (i + 1)
       });
     }
     notifyListeners();
   }
 
-  void completeGoal(int id) {
+  void changeComplete(int id) {
     final goalIndex = goals.indexWhere((goal) => goal['id'] == id);
     if (goalIndex != -1) {
       goals[goalIndex]['completed'] = !goals[goalIndex]['completed'];
@@ -34,15 +33,14 @@ class Goals with ChangeNotifier {
   }
 
   void changeTopPosition(int id) {
- var i = 0;
-        for (Map<String, dynamic> map in goals) {
-
-      if (map['id'] != id && !map['completed'] ) {
+    var i = 0;
+    for (Map<String, dynamic> map in goals) {
+      if (!map['completed']) {
         map['topPosition'] = initialTopPosition + 10.0 * i;
-        map['sidePosition'] = 10.0 * (i+1);
+        map['sidePosition'] = 10.0 * (i + 1);
         i += 1;
       }
     }
- notifyListeners();
+    notifyListeners();
   }
 }
