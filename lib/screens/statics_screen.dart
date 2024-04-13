@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:todolist/providers/goals.dart';
 import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
 
-
 class StaticsScreen extends StatefulWidget {
   const StaticsScreen({super.key});
 
@@ -17,7 +16,7 @@ class _StaticsScreenState extends State<StaticsScreen> {
     final todoData = Provider.of<Goals>(context).goals;
 
     final completedTodoData = todoData.where((element) => element['completed']);
-    final completedTodoList= completedTodoData.toList();
+    final completedTodoList = completedTodoData.toList();
 
     return Scaffold(
       appBar: AppBar(),
@@ -29,38 +28,34 @@ class _StaticsScreenState extends State<StaticsScreen> {
               child: LiquidCircularProgressIndicator(
                 value: completedTodoData.length / todoData.length,
                 valueColor: AlwaysStoppedAnimation(Colors.pink),
-                backgroundColor: Colors.white, // Defaults to the current Theme's backgroundColor.
-                borderColor: Colors.red,
-                borderWidth: 5.0,
                 direction: Axis.vertical,
-                // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.vertical.
-                center: Text('${((completedTodoData.length *100) / todoData.length).toInt()}%'), // value랑 같게
+                center: Text(
+                    '${((completedTodoData.length * 100) / todoData.length).toInt()}%'), // value랑 같게
               ),
-              // 통계페이지
             ),
           ),
           Expanded(
               child: ListView.builder(
-            itemCount: completedTodoList.length,
-            itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(completedTodoList[index]['todo']),
-                  subtitle: Text(completedTodoList[index]['date'].toString()),
-                  trailing: IconButton(
-                    icon: Icon(Icons.refresh_rounded),
-                    onPressed: () {
-                      setState(() {
-                        Provider.of<Goals>(context, listen: false)
-                            .changeComplete(todoData[index]['id']);
-                        Provider.of<Goals>(context, listen: false)
-                            .changeTopPosition(todoData[index]['id']);
-                        // isCompleted = !isCompleted;
-                      });
-                    },
-                  ),
-                );
-              }
-  )),
+                  itemCount: completedTodoList.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(completedTodoList[index]['todo']),
+                      subtitle:
+                          Text(completedTodoList[index]['date'].toString()),
+                      trailing: IconButton(
+                        icon: Icon(Icons.refresh_rounded),
+                        onPressed: () {
+                          setState(() {
+                            Provider.of<Goals>(context, listen: false)
+                                .changeComplete(todoData[index]['id']);
+                            Provider.of<Goals>(context, listen: false)
+                                .changeTopPosition(todoData[index]['id']);
+                            // isCompleted = !isCompleted;
+                          });
+                        },
+                      ),
+                    );
+                  })),
         ],
       )),
     );

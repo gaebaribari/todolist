@@ -23,6 +23,7 @@ dependencies:
   provider: ^5.0.0
   intl: ^0.17.0
   liquid_progress_indicator_v2: ^0.5.0
+  animated_page_transition: ^0.0.1+2
 
 dev_dependencies:
   flutter_test:

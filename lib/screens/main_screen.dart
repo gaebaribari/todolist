@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todolist/providers/goals.dart';
 import 'package:intl/intl.dart';
+import 'package:todolist/screens/memo_screen.dart';
 import 'package:todolist/screens/statics_screen.dart';
+import 'package:animated_page_transition/animated_page_transition.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -11,17 +13,13 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final todoData = Provider.of<Goals>(context).goals;
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.edit_note_outlined), // 연필에 추가 아이콘 없나 좀 동글동글한
-          onPressed: () {},
-        ),
         actions: [
           IconButton(
               icon: Icon(Icons.bar_chart_rounded),
@@ -72,6 +70,11 @@ class _MainScreenState extends State<MainScreen> {
             ),
           );
         }).toList(),
+      ),
+      floatingActionButton: PageTransitionButton(
+        vsync: this,
+        child: Icon(Icons.edit_note_outlined),
+        nextPage: const MemoScreen(),
       ),
     );
   }
