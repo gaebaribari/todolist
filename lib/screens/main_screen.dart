@@ -4,7 +4,6 @@ import 'package:todolist/providers/goals.dart';
 import 'package:intl/intl.dart';
 import 'package:todolist/screens/memo_screen.dart';
 import 'package:todolist/screens/statics_screen.dart';
-import 'package:animated_page_transition/animated_page_transition.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -13,10 +12,12 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
+class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final todoData = Provider.of<Goals>(context).goals;
+    var now = DateTime.now();
+    int formattedDate = int.parse(DateFormat('yyMMdd').format(now));
 
     return Scaffold(
       appBar: AppBar(
@@ -32,11 +33,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       body: Stack(
         children:
             todoData.reversed.where((item) => !item['completed']).map((item) {
-          var index = todoData.indexOf(item);
-
-          var now = DateTime.now();
-          int formattedDate = int.parse(DateFormat('yyMMdd').format(now));
-
           return AnimatedPositioned(
             duration: Duration(milliseconds: 500),
             curve: Curves.easeInOut,
@@ -71,11 +67,18 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
           );
         }).toList(),
       ),
-      floatingActionButton: PageTransitionButton(
-        vsync: this,
-        child: Icon(Icons.edit_note_outlined),
-        nextPage: const MemoScreen(),
-      ),
+      floatingActionButton: Provider.of<Goals>(context).goals.any((item) {
+        return item['date'] == formattedDate && item['completed'];
+      })
+          ? FloatingActionButton(
+              onPressed: () => showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) =>
+                    MemoScreen(todayDate: formattedDate),
+              ),
+              child: Icon(Icons.edit_note_outlined),
+            )
+          : null,
     );
   }
 }

@@ -7,7 +7,6 @@ class Goals with ChangeNotifier {
 
   void addGoal(String todo) {
     var now = DateTime.now();
-
     int formattedDate = int.parse(DateFormat('yyMMdd').format(now));
 
     var oneWeek = 7;
@@ -18,7 +17,8 @@ class Goals with ChangeNotifier {
         'completed': false,
         'date': formattedDate + i,
         'topPosition': initialTopPosition + 10.0 * i,
-        'sidePosition': 10.0 * (i + 1)
+        'sidePosition': 10.0 * (i + 1),
+        'memo': null,
       });
     }
     notifyListeners();
@@ -42,5 +42,15 @@ class Goals with ChangeNotifier {
       }
     }
     notifyListeners();
+  }
+
+  void saveTodayMemo(String memoText) {
+    var now = DateTime.now();
+    int formattedDate = int.parse(DateFormat('yyMMdd').format(now));
+    final goalIndex = goals.indexWhere((goal) => goal['date'] == formattedDate);
+    if (goalIndex != -1) {
+      goals[goalIndex]['memo'] = memoText;
+      notifyListeners();
+    }
   }
 }
