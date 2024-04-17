@@ -15,69 +15,121 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
-    final todoData = Provider.of<Goals>(context).goals;
+
+    List<Map<String, dynamic>> todoData = Provider.of<Goals>(context).goals;
+
     var now = DateTime.now();
     int formattedDate = int.parse(DateFormat('yyMMdd').format(now));
+    List<Map<String, dynamic>> beforeToday = [
+      ...todoData.where((item) => item['date'] < formattedDate).toList()
+        ..sort((a, b) => b['date'].compareTo(a['date']))
+    ];
+
+// 2024년 이후의 날짜들을 내림차순으로 정렬하고 완료되지 않은 항목들을 표시
+    List<Map<String, dynamic>> afterToday = [
+      ...todoData.where((item) => item['date'] >= formattedDate && !item['completed']).toList()
+        ..sort((a, b) => b['date'].compareTo(a['date']))
+    ];
 
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
-              icon: Icon(Icons.bar_chart_rounded),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => StaticsScreen()));
-              }),
+            icon: Icon(Icons.bar_chart_rounded),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => StaticsScreen()));
+            },
+          ),
         ],
       ),
       body: Stack(
-        children:
-            todoData.reversed.where((item) => !item['completed']).map((item) {
-          return AnimatedPositioned(
-            duration: Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
-            top: item['topPosition'],
-            left: item['sidePosition'],
-            right: item['sidePosition'],
-            child: Card(
-              child: Container(
-                height: 350,
-                width: item['cardWidth'],
-                child: Column(
-                  children: [
-                    Text(item['todo']),
-                    Text(item['date'].toString()),
-                    ElevatedButton(
-                      onPressed: formattedDate == item['date']
-                          ? () {
-                              setState(() {
-                                Provider.of<Goals>(context, listen: false)
-                                    .changeComplete(item['id']);
-                                Provider.of<Goals>(context, listen: false)
-                                    .changeTopPosition(item['id']);
-                              });
-                            }
-                          : null,
-                      child: Text('완수'),
-                    ),
-                  ],
+        children: [
+          // 2024년 이전의 날짜들 표시 (내림차순)
+          ...beforeToday.map((item) {
+            return AnimatedPositioned(
+              duration: Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+              top: item['topPosition'],
+              left: item['sidePosition'],
+              right: item['sidePosition'],
+              child: Card(
+                child: Container(
+                  height: 350,
+                  width: item['cardWidth'],
+                  child: Column(
+                    children: [
+                      Text(item['todo']),
+                      Text(item['date'].toString()),
+                      ElevatedButton(
+                        onPressed: formattedDate == item['date']
+                        // 오늘 누르는 버튼이 마지막 완료 버튼이라면?
+                            ? () {
+                          setState(() {
+                            Provider.of<Goals>(context, listen: false)
+                                .changeComplete(item['id']);
+                            Provider.of<Goals>(context, listen: false)
+                                .changeTopPosition(item['id']);
+                          });
+                        }
+                            : null,
+                        child: Text('완수'),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        }).toList(),
+            );
+          }).toList(),
+          // 2024년 이후의 항목 중 완료되지 않은 항목 표시 (내림차순)
+          ...afterToday.map((item) {
+            return AnimatedPositioned(
+              duration: Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+              top: item['topPosition'],
+              left: item['sidePosition'],
+              right: item['sidePosition'],
+              child: Card(
+                child: Container(
+                  height: 350,
+                  width: item['cardWidth'],
+                  child: Column(
+                    children: [
+                      Text(item['todo']),
+                      Text(item['date'].toString()),
+                      ElevatedButton(
+                        onPressed: formattedDate == item['date']
+                        // 오늘 누르는 버튼이 마지막 완료 버튼이라면?
+                            ? () {
+                          setState(() {
+                            Provider.of<Goals>(context, listen: false)
+                                .changeComplete(item['id']);
+                            Provider.of<Goals>(context, listen: false)
+                                .changeTopPosition(item['id']);
+                          });
+                        }
+                            : null,
+                        child: Text('완수'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ],
       ),
       floatingActionButton: Provider.of<Goals>(context).goals.any((item) {
         return item['date'] == formattedDate && item['completed'];
       })
           ? FloatingActionButton(
-              onPressed: () => showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) =>
-                    MemoScreen(todayDate: formattedDate),
-              ),
-              child: Icon(Icons.edit_note_outlined),
-            )
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) =>
+              MemoScreen(todayDate: formattedDate),
+        ),
+        child: Icon(Icons.edit_note_outlined),
+      )
           : null,
     );
   }
