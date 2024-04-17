@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todolist/providers/goals.dart';
 import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
+import 'package:todolist/screens/set_goal_screen.dart';
 
 class StaticsScreen extends StatefulWidget {
   final bool isLastDate;
@@ -58,6 +59,24 @@ class _StaticsScreenState extends State<StaticsScreen> {
                       ),
                     );
                   })),
+          widget.isLastDate
+              ? Expanded(
+                  child: Row(
+                    children: [
+                      ElevatedButton(onPressed: () {}, child: Text('PNG 저장하기')),
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SetGoalScreen()),
+                            );
+                          },
+                          child: Text('새로운 일주일 시작하기')),
+                    ],
+                  ),
+                )
+              : SizedBox(),
         ],
       )),
     );

@@ -79,7 +79,6 @@ class _SetGoalScreenState extends State<SetGoalScreen> {
 
   void _submitForm() {
     String todo = _todoController.text;
-
     Goals goals = Provider.of<Goals>(context, listen: false);
     goals.addGoal(todo);
     Navigator.push(
