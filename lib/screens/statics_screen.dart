@@ -4,7 +4,9 @@ import 'package:todolist/providers/goals.dart';
 import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
 
 class StaticsScreen extends StatefulWidget {
-  const StaticsScreen({super.key});
+  final bool isLastDate;
+
+  const StaticsScreen({Key? key, required this.isLastDate}) : super(key: key);
 
   @override
   State<StaticsScreen> createState() => _StaticsScreenState();

@@ -32,14 +32,28 @@ class Goals with ChangeNotifier {
     }
   }
 
-  void changeTopPosition(int id) {
+  void changeTopPosition(int date) {
+    List<Map<String, dynamic>> beforeToday = [
+      ...goals
+          .where((item) => item['date'] < date && !item['completed'])
+          .toList()
+        ..sort((a, b) => a['date'].compareTo(b['date']))
+    ];
+
+    // 오름차순
+    List<Map<String, dynamic>> afterToday = [
+      ...goals
+          .where((item) => item['date'] >= date && !item['completed'])
+          .toList()
+        ..sort((a, b) => a['date'].compareTo(b['date']))
+    ];
+    List sortedGoals = [...afterToday, ...beforeToday];
+
     var i = 0;
-    for (Map<String, dynamic> map in goals) {
-      if (!map['completed']) {
-        map['topPosition'] = initialTopPosition + 10.0 * i;
-        map['sidePosition'] = 10.0 * (i + 1);
-        i += 1;
-      }
+    for (Map<String, dynamic> map in sortedGoals) {
+      map['topPosition'] = initialTopPosition + 10.0 * i;
+      map['sidePosition'] = 10.0 * (i + 1);
+      i += 1;
     }
     notifyListeners();
   }

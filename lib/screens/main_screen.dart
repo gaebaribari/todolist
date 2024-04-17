@@ -20,12 +20,12 @@ class _MainScreenState extends State<MainScreen> {
 
     var now = DateTime.now();
     int formattedDate = int.parse(DateFormat('yyMMdd').format(now));
+    int lastDate = formattedDate + 7;
     List<Map<String, dynamic>> beforeToday = [
       ...todoData.where((item) => item['date'] < formattedDate).toList()
         ..sort((a, b) => b['date'].compareTo(a['date']))
     ];
 
-// 2024년 이후의 날짜들을 내림차순으로 정렬하고 완료되지 않은 항목들을 표시
     List<Map<String, dynamic>> afterToday = [
       ...todoData.where((item) => item['date'] >= formattedDate && !item['completed']).toList()
         ..sort((a, b) => b['date'].compareTo(a['date']))
@@ -38,7 +38,7 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.bar_chart_rounded),
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => StaticsScreen()));
+                  MaterialPageRoute(builder: (context) => StaticsScreen(isLastDate:false)));
             },
           ),
         ],
@@ -69,7 +69,7 @@ class _MainScreenState extends State<MainScreen> {
                             Provider.of<Goals>(context, listen: false)
                                 .changeComplete(item['id']);
                             Provider.of<Goals>(context, listen: false)
-                                .changeTopPosition(item['id']);
+                                .changeTopPosition(item['date']);
                           });
                         }
                             : null,
@@ -81,7 +81,6 @@ class _MainScreenState extends State<MainScreen> {
               ),
             );
           }).toList(),
-          // 2024년 이후의 항목 중 완료되지 않은 항목 표시 (내림차순)
           ...afterToday.map((item) {
             return AnimatedPositioned(
               duration: Duration(milliseconds: 500),
@@ -99,7 +98,6 @@ class _MainScreenState extends State<MainScreen> {
                       Text(item['date'].toString()),
                       ElevatedButton(
                         onPressed: formattedDate == item['date']
-                        // 오늘 누르는 버튼이 마지막 완료 버튼이라면?
                             ? () {
                           setState(() {
                             Provider.of<Goals>(context, listen: false)
@@ -107,6 +105,13 @@ class _MainScreenState extends State<MainScreen> {
                             Provider.of<Goals>(context, listen: false)
                                 .changeTopPosition(item['id']);
                           });
+                        }
+                            : formattedDate == lastDate
+                            ? () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => StaticsScreen(isLastDate:true)),
+                          );
                         }
                             : null,
                         child: Text('완수'),
