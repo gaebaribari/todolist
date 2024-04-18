@@ -145,11 +145,13 @@ class _MainScreenState extends State<MainScreen> {
         return item['date'] == formattedDate && item['completed'];
       })
           ? FloatingActionButton(
-              onPressed: () => showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) =>
-                    MemoScreen(todayDate: formattedDate),
-              ),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      MemoScreen(todayDate: formattedDate),
+                );
+              },
               child: Icon(Icons.edit_note_outlined),
             )
           : null,

@@ -28,9 +28,7 @@ class _MemoScreenState extends State<MemoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.greenAccent,
-      ),
+      appBar: AppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -48,6 +46,7 @@ class _MemoScreenState extends State<MemoScreen> {
               Provider.of<Goals>(context, listen: false)
                   .saveTodayMemo(memoText);
               print('onPressed 안에 $memoText');
+              Navigator.pop(context);
             },
             child: Text('저장'),
           ),
