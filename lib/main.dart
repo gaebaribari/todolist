@@ -11,10 +11,10 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-      ChangeNotifierProvider(
-        create: (_)=> Goals(),
-        child: MyApp(),
-      ),
+    ChangeNotifierProvider(
+      create: (_) => Goals(),
+      child: MyApp(),
+    ),
   );
 }
 
@@ -31,5 +31,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-

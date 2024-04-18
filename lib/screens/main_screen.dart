@@ -15,7 +15,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
-
     List<Map<String, dynamic>> todoData = Provider.of<Goals>(context).goals;
 
     var now = DateTime.now();
@@ -27,7 +26,9 @@ class _MainScreenState extends State<MainScreen> {
     ];
 
     List<Map<String, dynamic>> afterToday = [
-      ...todoData.where((item) => item['date'] >= formattedDate && !item['completed']).toList()
+      ...todoData
+          .where((item) => item['date'] >= formattedDate && !item['completed'])
+          .toList()
         ..sort((a, b) => b['date'].compareTo(a['date']))
     ];
 
@@ -37,8 +38,10 @@ class _MainScreenState extends State<MainScreen> {
           IconButton(
             icon: Icon(Icons.bar_chart_rounded),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => StaticsScreen(isLastDate:false)));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => StaticsScreen(isLastDate: false)));
             },
           ),
         ],
@@ -63,15 +66,15 @@ class _MainScreenState extends State<MainScreen> {
                       Text(item['date'].toString()),
                       ElevatedButton(
                         onPressed: formattedDate == item['date']
-                        // 오늘 누르는 버튼이 마지막 완료 버튼이라면?
+                            // 오늘 누르는 버튼이 마지막 완료 버튼이라면?
                             ? () {
-                          setState(() {
-                            Provider.of<Goals>(context, listen: false)
-                                .changeComplete(item['id']);
-                            Provider.of<Goals>(context, listen: false)
-                                .changeTopPosition(item['date']);
-                          });
-                        }
+                                setState(() {
+                                  Provider.of<Goals>(context, listen: false)
+                                      .changeComplete(item['id']);
+                                  Provider.of<Goals>(context, listen: false)
+                                      .changeTopPosition(item['date']);
+                                });
+                              }
                             : null,
                         child: Text('완수'),
                       ),
@@ -99,21 +102,23 @@ class _MainScreenState extends State<MainScreen> {
                       ElevatedButton(
                         onPressed: formattedDate == item['date']
                             ? () {
-                          setState(() {
-                            Provider.of<Goals>(context, listen: false)
-                                .changeComplete(item['id']);
-                            Provider.of<Goals>(context, listen: false)
-                                .changeTopPosition(item['id']);
-                          });
-                        }
+                                setState(() {
+                                  Provider.of<Goals>(context, listen: false)
+                                      .changeComplete(item['id']);
+                                  Provider.of<Goals>(context, listen: false)
+                                      .changeTopPosition(item['id']);
+                                });
+                              }
                             : formattedDate == lastDate
-                            ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => StaticsScreen(isLastDate:true)),
-                          );
-                        }
-                            : null,
+                                ? () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              StaticsScreen(isLastDate: true)),
+                                    );
+                                  }
+                                : null,
                         child: Text('완수'),
                       ),
                     ],
@@ -128,13 +133,13 @@ class _MainScreenState extends State<MainScreen> {
         return item['date'] == formattedDate && item['completed'];
       })
           ? FloatingActionButton(
-        onPressed: () => showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) =>
-              MemoScreen(todayDate: formattedDate),
-        ),
-        child: Icon(Icons.edit_note_outlined),
-      )
+              onPressed: () => showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) =>
+                    MemoScreen(todayDate: formattedDate),
+              ),
+              child: Icon(Icons.edit_note_outlined),
+            )
           : null,
     );
   }
