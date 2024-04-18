@@ -47,7 +47,9 @@ class _StaticsScreenState extends State<StaticsScreen> {
     final completedTodoList = completedTodoData.toList();
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        automaticallyImplyLeading: !widget.isLastDate,
+      ),
       body: Center(
           child: Screenshot(
         controller: _controller,

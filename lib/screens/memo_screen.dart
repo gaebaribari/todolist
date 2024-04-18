@@ -53,8 +53,6 @@ class _MemoScreenState extends State<MemoScreen> {
           ),
         ],
       ),
-      // 입력창만들기
-      backgroundColor: Colors.greenAccent,
     );
   }
 

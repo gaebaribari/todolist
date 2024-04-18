@@ -20,6 +20,19 @@ class _MainScreenState extends State<MainScreen> {
     var now = DateTime.now();
     int formattedDate = int.parse(DateFormat('yyMMdd').format(now));
     int lastDate = formattedDate + 7;
+
+    if (formattedDate > lastDate) {
+      Future.delayed(Duration.zero, () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => (StaticsScreen(
+                    isLastDate: true,
+                  ))),
+        );
+      });
+    }
+
     List<Map<String, dynamic>> beforeToday = [
       ...todoData.where((item) => item['date'] < formattedDate).toList()
         ..sort((a, b) => b['date'].compareTo(a['date']))
@@ -49,7 +62,6 @@ class _MainScreenState extends State<MainScreen> {
       ),
       body: Stack(
         children: [
-          // 2024년 이전의 날짜들 표시 (내림차순)
           ...beforeToday.map((item) {
             return AnimatedPositioned(
               duration: Duration(milliseconds: 500),
@@ -67,7 +79,6 @@ class _MainScreenState extends State<MainScreen> {
                       Text(item['date'].toString()),
                       ElevatedButton(
                         onPressed: formattedDate == item['date']
-                            // 오늘 누르는 버튼이 마지막 완료 버튼이라면?
                             ? () {
                                 setState(() {
                                   Provider.of<Goals>(context, listen: false)
