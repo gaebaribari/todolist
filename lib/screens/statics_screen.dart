@@ -69,9 +69,11 @@ class _StaticsScreenState extends State<StaticsScreen> {
                     itemCount: completedTodoList.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text(completedTodoList[index]['todo']),
-                        subtitle:
-                            Text(completedTodoList[index]['date'].toString()),
+                        title: Text(
+                            '${completedTodoList[index]['id']} ${completedTodoList[index]['todo']}'),
+                        subtitle: widget.isLastDate
+                            ? Text(completedTodoList[index]['memo'] ?? '')
+                            : null,
                         trailing: IconButton(
                           icon: Icon(Icons.refresh_rounded),
                           onPressed: () {
