@@ -13,6 +13,7 @@ environment:
 
 dependencies:
   flutter:
+
     sdk: flutter
 
   cupertino_icons: ^1.0.2
@@ -24,6 +25,8 @@ dependencies:
   liquid_progress_indicator_v2: ^0.5.0
   image_gallery_saver: ^2.0.3
   screenshot: ^2.3.0
+  glass_kit: ^3.0.0
+  dotted_line: ^3.2.2
 
 dev_dependencies:
   flutter_test:
@@ -37,3 +40,15 @@ flutter:
 
 
   uses-material-design: true
+
+  fonts:
+    - family: GmarketMedium
+      fonts:
+        - asset: assets/fonts/GmarketSansMedium.otf
+    - family: GmarketBold
+      fonts:
+        - asset: assets/fonts/GmarketSansBold.otf
+    - family: Chab
+      fonts:
+        - asset: assets/fonts/chab.otf
+

@@ -3,9 +3,9 @@ import 'package:intl/intl.dart';
 
 class Goals with ChangeNotifier {
   List<Map<String, dynamic>> goals = [];
-  final initialTopPosition = 130.0;
+  var cardSize = 400;
 
-  void addGoal(String todo) {
+  void addGoal(context, String todo) {
     var now = DateTime.now();
     int formattedDate = int.parse(DateFormat('yyMMdd').format(now));
 
@@ -16,8 +16,8 @@ class Goals with ChangeNotifier {
         'todo': todo,
         'completed': false,
         'date': formattedDate + i,
-        'topPosition': initialTopPosition + 10.0 * i,
-        'sidePosition': 10.0 * (i + 1),
+        'topPosition': MediaQuery.of(context).size.height / 16 + (i * 20),
+        'sidePosition': 30.0 + (1 + i) * 5,
         'memo': null,
       });
     }
@@ -32,29 +32,21 @@ class Goals with ChangeNotifier {
     }
   }
 
-  void changeTopPosition(int date) {
-    List<Map<String, dynamic>> beforeToday = [
-      ...goals
-          .where((item) => item['date'] < date && !item['completed'])
-          .toList()
-        ..sort((a, b) => a['date'].compareTo(b['date']))
-    ];
+  void changePosition(BuildContext context, int date) {
+    List<Map<String, dynamic>> beforeDate = goals
+        .where((item) => date > item['date'] || (item['completed']))
+        .toList();
+    List<Map<String, dynamic>> afterDate = goals
+        .where((item) => date <= item['date'] && !item['completed'])
+        .toList();
 
-    // 오름차순
-    List<Map<String, dynamic>> afterToday = [
-      ...goals
-          .where((item) => item['date'] >= date && !item['completed'])
-          .toList()
-        ..sort((a, b) => a['date'].compareTo(b['date']))
-    ];
-    List sortedGoals = [...afterToday, ...beforeToday];
-
-    var i = 0;
-    for (Map<String, dynamic> map in sortedGoals) {
-      map['topPosition'] = initialTopPosition + 10.0 * i;
-      map['sidePosition'] = 10.0 * (i + 1);
-      i += 1;
+    for (int i = 0; i < afterDate.length; i++) {
+      afterDate[i]['sidePosition'] = 30.0 + (1 + i) * 5;
+      afterDate[i]['topPosition'] =
+          MediaQuery.of(context).size.height / 16 + (i * 20);
     }
+
+    goals = [...beforeDate, ...afterDate];
     notifyListeners();
   }
 

@@ -29,28 +29,52 @@ class _MemoScreenState extends State<MemoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TextField(
-            maxLines: null,
-            controller: _textEditingController,
-            decoration: InputDecoration(
-              hintText: '메모를 입력하세요',
+      body: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+        ),
+        padding: EdgeInsets.fromLTRB(15, 0, 15, 50),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextField(
+              cursorColor: Colors.black45,
+              controller: _textEditingController,
+              decoration: InputDecoration(
+                hintText: 'text...',
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+
+              ),
+              maxLines:5,
+              maxLength: 200,
+
             ),
-          ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              String memoText = _textEditingController.text; // 텍스트 필드의 값 가져오기
-              Provider.of<Goals>(context, listen: false)
-                  .saveTodayMemo(memoText);
-              print('onPressed 안에 $memoText');
-              Navigator.pop(context);
-            },
-            child: Text('저장'),
-          ),
-        ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    String memoText = _textEditingController.text; // 텍스트 필드의 값 가져오기
+                    Provider.of<Goals>(context, listen: false)
+                        .saveTodayMemo(memoText);
+                    print('onPressed 안에 $memoText');
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Save',
+                    style: TextStyle(fontSize: 16.0, color: Color(0xFFFFBDBD), fontFamily:'GmarketBold', ),
+                  ),
+                ),
+              ],
+            ),
+
+          ],
+        ),
       ),
     );
   }
