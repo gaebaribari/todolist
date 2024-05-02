@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 
 class Goals with ChangeNotifier {
   List<Map<String, dynamic>> goals = [];
-  var cardSize = 400;
 
   void addGoal(context, String todo) {
     var now = DateTime.now();
@@ -16,8 +15,6 @@ class Goals with ChangeNotifier {
         'todo': todo,
         'completed': false,
         'date': formattedDate + i,
-        'topPosition': MediaQuery.of(context).size.height / 16 + (i * 20),
-        'sidePosition': 30.0 + (1 + i) * 5,
         'memo': null,
       });
     }
@@ -30,24 +27,6 @@ class Goals with ChangeNotifier {
       goals[goalIndex]['completed'] = !goals[goalIndex]['completed'];
       notifyListeners();
     }
-  }
-
-  void changePosition(BuildContext context, int date) {
-    List<Map<String, dynamic>> beforeDate = goals
-        .where((item) => date > item['date'] || (item['completed']))
-        .toList();
-    List<Map<String, dynamic>> afterDate = goals
-        .where((item) => date <= item['date'] && !item['completed'])
-        .toList();
-
-    for (int i = 0; i < afterDate.length; i++) {
-      afterDate[i]['sidePosition'] = 30.0 + (1 + i) * 5;
-      afterDate[i]['topPosition'] =
-          MediaQuery.of(context).size.height / 16 + (i * 20);
-    }
-
-    goals = [...beforeDate, ...afterDate];
-    notifyListeners();
   }
 
   void saveTodayMemo(String memoText) {

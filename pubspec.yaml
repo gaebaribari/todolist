@@ -31,6 +31,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+    ios:
+      # Other ios configuration
+      entitlements: Runner.entitlements
 
 
   flutter_lints: ^2.0.0

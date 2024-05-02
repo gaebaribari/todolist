@@ -8,6 +8,9 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:dotted_line/dotted_line.dart';
 
 class StaticsScreen extends StatefulWidget {
+
+
+  // showButton 기준 : 마지막날 complete인경우 , 마지막날이 넘어간경우
   final bool isLastDate;
 
   const StaticsScreen({Key? key, required this.isLastDate}) : super(key: key);
@@ -75,12 +78,25 @@ class _StaticsScreenState extends State<StaticsScreen> {
                     value: completedTodoData.length / todoData.length,
                     valueColor: AlwaysStoppedAnimation(Color(0xffFFBFBF)),
                     direction: Axis.vertical,
-                    center: Text(
-                        '${((completedTodoData.length * 100) / todoData.length).toInt()}',
-                        style: TextStyle(
-                            fontFamily: 'Chab',
-                            fontSize: 88,
-                            color: Colors.black54)), // value랑 같게
+                    center: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                            '${((completedTodoData.length * 100) / todoData.length).toInt()}',
+                            style: TextStyle(
+                                fontFamily: 'Chab',
+                                fontSize: 88,
+                                color: Colors.black54)),
+                        Text(
+                          '%',
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontFamily: 'Chab',
+                              color: Colors.black54),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -96,31 +112,35 @@ class _StaticsScreenState extends State<StaticsScreen> {
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
                                 child: ListTile(
                                   title: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text('${completedTodoList[index]['id']}일째',style: TextStyle(
-                                        color: Colors.black38,
-                                      ),),
+                                      Text(
+                                        '${completedTodoList[index]['id']}일째 ${completedTodoList[index]['todo']}',
+                                        style: TextStyle(
+                                          color: Colors.black38,
+                                        ),
+                                      ),
                                       // bold하기
-                                      Text('${completedTodoList[index]['todo']}'),
+                                      completedTodoList[index]['memo'] != null
+                                          ? Text(
+                                              completedTodoList[index]['memo'])
+                                          : Text(
+                                              '메모를 입력해보세요',
+                                              style: TextStyle(
+                                                  color: Colors.black38),
+                                            ),
                                     ],
                                   ),
-                                  subtitle: widget.isLastDate
-                                      ? Text(
-                                          completedTodoList[index]['memo'] ?? '')
-                                      : null,
                                   trailing: IconButton(
                                     alignment: Alignment.bottomLeft,
                                     icon: Icon(Icons.refresh_rounded),
                                     onPressed: () {
                                       setState(() {
-                                        Provider.of<Goals>(context, listen: false)
+                                        Provider.of<Goals>(context,
+                                                listen: false)
                                             .changeComplete(
                                                 todoData[index]['id']);
-                                        Provider.of<Goals>(context, listen: false)
-                                            .changePosition(
-                                                context, todoData[index]['date']);
-                                        // isCompleted = !isCompleted;
                                       });
                                     },
                                   ),
