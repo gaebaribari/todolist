@@ -12,15 +12,15 @@ class MemoScreen extends StatefulWidget {
 }
 
 class _MemoScreenState extends State<MemoScreen> {
-  late TextEditingController _textEditingController;
+  TextEditingController _textEditingController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _textEditingController = TextEditingController();
-    List<Map<String, dynamic>> goals =
-        Provider.of<Goals>(context, listen: false).goals;
-    Map<String, dynamic>? item = goals
+    Goals goalsProvider = context.watch<Goals>();
+    List<Map<String, dynamic>> todoData = goalsProvider.goals;
+
+    Map<String, dynamic>? item = todoData
         .firstWhere((map) => map['date'] == widget.todayDate, orElse: () => {});
     _textEditingController.text = item['memo'] ?? '';
   }

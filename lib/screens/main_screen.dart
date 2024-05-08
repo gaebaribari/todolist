@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todolist/providers/goals.dart';
 import 'package:intl/intl.dart';
-import 'package:todolist/screens/memo_screen.dart';
 import 'package:todolist/screens/statics_screen.dart';
 import 'package:glass_kit/glass_kit.dart';
 import 'package:todolist/widgets/check_container.dart';
@@ -19,9 +18,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> todoData = Provider
-        .of<Goals>(context)
-        .goals;
+    Goals goalsProvider = context.watch<Goals>();
+    List<Map<String, dynamic>> todoData = goalsProvider.goals;
 
     var now = DateTime.now();
     int formattedDate = int.parse(DateFormat('yyMMdd').format(now));
@@ -86,18 +84,11 @@ class _MainScreenState extends State<MainScreen> {
           ],
         ),
         body: Center(
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                _isButtonVisible = !_isButtonVisible;
-              });
-            },
             child: AnimatedSwitcher(
               duration: Duration(milliseconds: 500),
               transitionBuilder: (Widget child, Animation<double> animation) {
                 return ScaleTransition(
-                  scale: CurvedAnimation(
-                      parent: animation, curve: Curves.easeInOut),
+                  scale: animation,
                   child: child,
                 );
               },
@@ -202,7 +193,6 @@ class _MainScreenState extends State<MainScreen> {
               ) : CheckContainer(),
             ),),
         ),
-      ),
     );
   }
 
