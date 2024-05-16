@@ -39,3 +39,11 @@ UI 디자인: Figma
 기타: GestureDetector, ElevatedButton, Navigation, Snackbar
 
 이 프로젝트는 현재 진행 중이며, 지속적으로 앱 스토어 심사에 도전하고 있습니다. 이를 통해 사용자의 피드백을 받아 앱을 개선하고 있습니다.
+
+(https://github.com/gaebaribari/todolist/assets/165237903/4cb63f6a-dbc0-4b52-a43f-3daec8d9c2c1)
+(https://github.com/gaebaribari/todolist/assets/165237903/001246a1-2de4-4f4d-b108-f877b66d42d5)
+(https://github.com/gaebaribari/todolist/assets/165237903/9eb10f3e-b855-4b48-bcba-bb61c7581936)
+(https://github.com/gaebaribari/todolist/assets/165237903/d1908674-f739-4cf3-b312-14f8260f6b33)
+(https://github.com/gaebaribari/todolist/assets/165237903/2884d867-4779-4f92-b8c3-7ff7733ac6dc)
+(https://github.com/gaebaribari/todolist/assets/165237903/9777efcb-0c82-4f4d-b949-0cc6e2ed661d)
+
