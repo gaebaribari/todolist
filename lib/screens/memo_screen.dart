@@ -17,16 +17,17 @@ class _MemoScreenState extends State<MemoScreen> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     Goals goalsProvider = context.watch<Goals>();
     List<Map<String, dynamic>> todoData = goalsProvider.goals;
 
     Map<String, dynamic>? item = todoData
         .firstWhere((map) => map['date'] == widget.todayDate, orElse: () => {});
     _textEditingController.text = item['memo'] ?? '';
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -48,18 +49,17 @@ class _MemoScreenState extends State<MemoScreen> {
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,
                 ),
-
               ),
-              maxLines:5,
+              maxLines: 5,
               maxLength: 200,
-
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
                   onPressed: () {
-                    String memoText = _textEditingController.text; // 텍스트 필드의 값 가져오기
+                    String memoText =
+                        _textEditingController.text; // 텍스트 필드의 값 가져오기
                     Provider.of<Goals>(context, listen: false)
                         .saveTodayMemo(memoText);
                     print('onPressed 안에 $memoText');
@@ -67,12 +67,15 @@ class _MemoScreenState extends State<MemoScreen> {
                   },
                   child: Text(
                     'Save',
-                    style: TextStyle(fontSize: 16.0, color: Color(0xFFFFBDBD), fontFamily:'GmarketBold', ),
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Color(0xFFFFBDBD),
+                      fontFamily: 'GmarketBold',
+                    ),
                   ),
                 ),
               ],
             ),
-
           ],
         ),
       ),
