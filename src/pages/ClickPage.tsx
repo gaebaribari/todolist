@@ -1,30 +1,22 @@
 import { useEffect } from "react";
+import { useTextStore } from "../stores/useTextStore";
+import { useTodolistStore } from "../stores/useTodolistStore";
 
-interface TodoItem {
-	title: string;
-	completed: boolean;
-	completedDate: string | null;
-}
+export default function ClickPage() {
+	const { text } = useTextStore();
+	const { todolist, updateTodolist, completeTodo } = useTodolistStore();
 
-interface Prop {
-	text: string;
-	TodoList: TodoItem[];
-	onUpdate: (updateContent: string) => void;
-	onClick: (index: number) => void;
-}
-
-export default function ClickPage({ text, TodoList, onUpdate, onClick }: Prop) {
 	useEffect(() => {
-		onUpdate(text);
+		updateTodolist(text);
 	}, []);
 
-	const filteredTodo = TodoList.filter((todo) => !todo.completed);
+	const filteredTodo = todolist.filter((todo) => !todo.completed);
 
 	return (
 		<>
 			{filteredTodo.map((todo, index) => (
 				<div>
-					<button onClick={() => onClick(index)}>{todo.title}</button>
+					<button onClick={() => completeTodo(index)}>{todo.title}</button>
 				</div>
 			))}
 		</>

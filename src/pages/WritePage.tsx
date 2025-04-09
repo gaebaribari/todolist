@@ -1,23 +1,16 @@
 import { useEffect } from "react";
+import { useTextStore } from "../stores/useTextStore";
+import { useTodolistStore } from "../stores/useTodolistStore";
 
-interface TodoItem {
-	title: string;
-	completed: boolean;
-	completedDate: string | null;
-}
-
-interface Prop {
-	text: string;
-	onText: (input: React.ChangeEvent<HTMLTextAreaElement> | string) => void;
-	TodoList: TodoItem[];
-}
-
-export default function WritePage({ text, onText, TodoList }: Prop) {
+export default function WritePage() {
+	const { text, updateText } = useTextStore();
+	const { todolist } = useTodolistStore();
 	useEffect(() => {
-		const newText = TodoList.filter((item) => !item.completed)
+		const newText = todolist
+			.filter((item) => !item.completed)
 			.map((item) => item.title)
 			.join("\n");
-		onText(newText);
+		updateText(newText);
 	}, []);
 
 	return (
@@ -29,7 +22,7 @@ export default function WritePage({ text, onText, TodoList }: Prop) {
 				<textarea
 					id="Notes"
 					value={text}
-					onChange={(e) => onText(e.target.value)}
+					onChange={(e) => updateText(e.target.value)}
 					className="mt-0.5 w-full resize-none rounded border-gray-300 shadow-sm sm:text-sm dark:border-gray-600 dark:bg-gray-900 dark:text-white"
 					rows={10}
 				></textarea>
